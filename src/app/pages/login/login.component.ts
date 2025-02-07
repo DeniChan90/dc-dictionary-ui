@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, finalize, of, throwError } from 'rxjs';
 import { AuthService } from 'src/app/core/api/auth/auth.service';
 
 @Component({
@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
                 this.loginError = e.error.error;
 
                 setTimeout(() => this.loginError = null, 2000);
-                return of(e);
-            })
+                return throwError(e);
+            }),
         ).subscribe(tokenData => {
             localStorage.setItem('tokenData', JSON.stringify(tokenData));
             this.router.navigateByUrl('/');
