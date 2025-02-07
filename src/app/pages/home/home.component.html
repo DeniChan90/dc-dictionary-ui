@@ -24,10 +24,13 @@
     <button type="button" class="btn btn-success mt-2" (click)="saveNewTranslations()">Add word</button>
 </div>
 
-<ng-container *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
-    <div *ngFor="let translation of filteredTranslations" class="nav-lang">
-        <div class="d-flex justify-content-between p-2">
-            <div (click)="getRelatedTranslations(translation.word_id)" class="flex-grow-1 fs-4">{{translation.text}}
+<div class="mb-5" *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
+    <div *ngFor="let translation of filteredTranslations" class="nav-lang border border-secondary rounded mb-2">
+        <div class="d-flex justify-content-between align-items-center p-2">
+            <div (click)="getRelatedTranslations(translation.word_id)" class="flex-grow-1 fs-3">
+                <i class="bi"
+                    [ngClass]="relatedTranslations[translation.word_id] && relatedTranslations[translation.word_id].opened ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+                <span class="ms-2">{{translation.text}}</span>
             </div>
             <span (click)="deleteTranslations(translation, confirmDelete)">
                 <i class="bi bi-trash3-fill h3"></i>
@@ -38,12 +41,12 @@
             <div *ngFor="let t of relatedTranslations[translation.word_id].values ">
                 <ng-container *ngIf="t.lang.code !== selectedLang">
                     <span class="me-2">{{t.lang.symbol}}</span>
-                    <span class="fs-3">{{t.text}}</span>
+                    <span class="fs-5 text-secondary">{{t.text}}</span>
                 </ng-container>
             </div>
         </div>
     </div>
-</ng-container>
+</div>
 
 <ng-template #loading>
     <div class="p-3 text-center">

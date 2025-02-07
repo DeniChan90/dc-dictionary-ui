@@ -46,7 +46,13 @@ export class HomeComponent implements AfterViewInit {
         this.search.valueChanges.pipe(
             debounceTime(500),
             switchMap(val => {
-                this.filteredTranslations = this.translations?.filter((t: any) => t.text.includes(val));
+                this.filteredTranslations = this.translations?.filter((t: any) => t.text.includes(val))
+                    .sort((a: any, b: any) => {
+                        const textA = a.text.toLowerCase();
+                        const textB = b.text.toLowerCase();
+
+                        return textA > textB ? 1 : -1;
+                    });
                 this.newTranslations = [];
 
                 if (!this.filteredTranslations.length && !!val) {
@@ -101,6 +107,10 @@ export class HomeComponent implements AfterViewInit {
         ).subscribe((translations: any) => {
             this.translations = translations || [];
             this.search.setValue('');
+
+            Object.values(this.relatedTranslations).forEach((v: any) => {
+                v.opened = false;
+            })
             console.log('translations >>', translations)
         })
     }
@@ -160,6 +170,11 @@ export class HomeComponent implements AfterViewInit {
                     }
                 )))
             ).subscribe((translations: any) => {
+                //Object.values(this.relatedTranslations).forEach((v: any) => {
+                //  v.opened = false;
+                //})
+
+
                 this.relatedTranslations[translations[0].word_id] = {
                     opened: true,
                     values: translations
