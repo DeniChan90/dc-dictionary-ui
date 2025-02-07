@@ -1,0 +1,71 @@
+<h1 class="text-center m-5">DC Dictionary</h1>
+<div class="row mt-5 p-4">
+    <div class="col-sm"></div>
+    <div class="col-md">
+
+        <form [formGroup]="form" class="mx-auto d-flex flex-column">
+            <div class="mb-3">
+                <label for="first-name" class="form-label">First name</label>
+                <input formControlName="First_name" class="form-control" id="first-name"
+                    aria-describedby="firstNameHelp">
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+            </div>
+            <div class="mb-3">
+                <label for="last-name" class="form-label">Last name</label>
+                <input formControlName="Last_name" class="form-control" id="last-name" aria-describedby="lastNameHelp">
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input formControlName="Email" type="email" class="form-control" id="email"
+                    aria-describedby="emailHelp">
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input formControlName="Password" type="password" class="form-control" id="password">
+            </div>
+            <!--<div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div> -->
+            <form [formGroup]="languagesForm">
+                <div *ngFor="let language of languages" class="form-check">
+                    <input class="form-check-input" (change)="toggleLanguage($event)" type="checkbox"
+                        [value]="language.code" [id]="language.code">
+                    <label class="form-check-label" [for]="language.code">
+                        <span class="me-1 d-inline-block">{{language.symbol}}</span>
+                        <span>{{language.name}}</span>
+                    </label>
+                </div>
+                <div ngbDropdown class="d-inline-block me-5">
+                    <button type="button" class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle>
+                        Select default Language
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdown">
+                        <button *ngFor="let lang of selectedLanguages" ngbDropdownItem
+                            (click)="setDefaultLanguage(lang)">{{lang.name}}</button>
+                    </div>
+                </div>
+                <div *ngIf="defaultLanguage" class="d-inline-block">
+                    <span class="me-1 d-inline-block">{{defaultLanguage.symbol}}</span>
+                    <span>{{defaultLanguage.name}}</span>
+                </div>
+                <div class="form-text">Select at least 2 languages</div>
+            </form>
+
+
+
+            <button type="submit" [disabled]="submitDisabled" (click)="signup()" class="btn btn-primary mt-3">
+                <span *ngIf="!authService.loading; else loader">Signup</span>
+            </button>
+            <button type="button" [disabled]="authService.loading" class="btn btn-link" routerLink="/login">Back to
+                Login</button>
+        </form>
+
+    </div>
+    <div class="col-sm"></div>
+</div>
+<ng-template #loader>
+    <div class="spinner-border text-light" role="status"></div>
+</ng-template>

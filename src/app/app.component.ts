@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { AuthService } from './core/api/auth/auth.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'dc-dictionary-ui';
+    constructor(public authService: AuthService) { }
 }

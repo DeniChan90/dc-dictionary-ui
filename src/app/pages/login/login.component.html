@@ -1,0 +1,36 @@
+<h1 class="text-center m-5">DC Dictionary</h1>
+<div class="row mt-5 p-4">
+    <div class="col-sm"></div>
+    <div class="col-md">
+
+        <form [formGroup]="form" class="mx-auto d-flex flex-column">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input formControlName="Email" type="email" class="form-control" id="email"
+                    aria-describedby="emailHelp">
+                <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input formControlName="Password" type="password" class="form-control" id="examplePassword">
+                <div *ngIf="loginError" id="passwordHelp" class="form-text text-danger">{{loginError}}</div>
+            </div>
+            <!--<div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div> -->
+            <button [disabled]="submitDisabled" type="submit" class="btn btn-primary" (click)="login()">
+                <span *ngIf="!authService.loading; else loader">Login</span>
+            </button>
+
+            <button [disabled]="authService.loading" type="button" class="btn btn-link"
+                routerLink="/signup">Signup</button>
+        </form>
+    </div>
+    <div class="col-sm"></div>
+</div>
+
+<ng-template #loader>
+    <div class="spinner-border text-light" role="status">
+    </div>
+</ng-template>
