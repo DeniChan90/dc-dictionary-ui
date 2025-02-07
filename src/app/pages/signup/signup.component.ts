@@ -41,7 +41,10 @@ export class SignupComponent {
         private router: Router
     ) {
         this.translateService.getLanguages().subscribe((languages: any) => {
-            this.languages = languages;
+            this.languages = languages.sort((a: any, b: any) => {
+                console.log('test..', a)
+                return a.name > b.name ? 1 : -1;
+            });
         });
     }
 

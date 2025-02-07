@@ -16,7 +16,7 @@
                 <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
+                <label for="email" class="form-label">Email address (username)</label>
                 <input formControlName="Email" type="email" class="form-control" id="email"
                     aria-describedby="emailHelp">
                 <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
@@ -40,7 +40,7 @@
                 </div>
                 <div ngbDropdown class="d-inline-block me-5">
                     <button type="button" class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle>
-                        Select default Language
+                        Select your native Language
                     </button>
                     <div ngbDropdownMenu aria-labelledby="dropdown">
                         <button *ngFor="let lang of selectedLanguages" ngbDropdownItem

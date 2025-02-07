@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, TemplateRef, inject } from '@angular/core';
+import { Component, AfterViewInit, TemplateRef, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,7 @@ import { TranslateService } from 'src/app/core/api/translate/translate.service';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements AfterViewInit {
+export class HomeComponent implements AfterViewInit, OnDestroy {
     public form = new UntypedFormGroup({
         search: new UntypedFormControl(null)
     });
@@ -34,12 +34,17 @@ export class HomeComponent implements AfterViewInit {
         return { defaultLang: this.selectedLang }
     }
 
+    get hasTranslation() {
+        return this.filteredTranslations?.find((t: any) => t.text.toLowerCase() === this.search.value.toLowerCase())
+    }
+
     constructor(
         public settingsService: SettingsService,
         public translateService: TranslateService,
         private route: ActivatedRoute,
         private router: Router,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private cdr: ChangeDetectorRef
     ) {
         console.log('API URL <<', apiUrl)
         this.translateService.test().subscribe(r => console.log('...API TEST...', r))
@@ -90,12 +95,18 @@ export class HomeComponent implements AfterViewInit {
         this.settingsService.settings$.pipe(filter(s => !!s)).subscribe((settings: any) => {
             this.refreshTranslations(this.selectedLang || settings.Default_language, settings.User_id);
             this.selectedLang = this.selectedLang || settings.Default_language;
+            this.cdr.detectChanges();
             console.log('subscription ...', this.selectedLang)
         })
     }
 
     translate() {
         console.log('value....')
+    }
+
+    public ngOnDestroy(): void {
+        this.translations = null;
+        this.relatedTranslations = {};
     }
 
     public refreshTranslations(lang: string = this.settingsService.defaultLanguage, userId: string = this.settingsService.userId) {

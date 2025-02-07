@@ -1,6 +1,14 @@
-<div>
-    <button type="button" class="btn btn-link" (click)="logout()">Logout</button>
-</div>
+<ul class="nav justify-content-between border-bottom border-secondary pt-2 pb-2 mb-2">
+    <div class="nav-item">
+        <span class="nav-link text-light">Hello, {{fullUserName}} <i class="bi bi-emoji-smile"></i></span>
+    </div>
+    <li class="nav-item">
+        <button type="button" class="btn btn-outline-secondary me-2" (click)="logout()">
+            <span class="me-2">Logout</span>
+            <i class="bi bi-box-arrow-right"></i>
+        </button>
+    </li>
+</ul>
 <div *ngIf="settings; else loading" class="p-3">
     <ng-content></ng-content>
 </div>

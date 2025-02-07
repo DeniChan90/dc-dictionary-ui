@@ -1,27 +1,31 @@
 <form [formGroup]="form">
     <div class="mb-3 d-flex">
         <input class="form-control" formControlName="search" id="search" placeholder="Type something to translate...">
-        <button [disabled]="!search.value || newTranslations.length" type="button" class="btn btn-primary ms-2"
-            (click)="searchTranslations()">Search</button>
+        <button [disabled]="!search.value || newTranslations.length || hasTranslation" type="button"
+            class="btn btn-primary ms-2" (click)="searchTranslations()">Search</button>
     </div>
 </form>
 
 <div *ngIf="settingsService.settings?.Languages.length" class="d-flex overflow-auto">
     <div *ngFor="let language of settingsService.settings.Languages" class="nav-lang m-3 p-3"
-        [ngClass]="{'border border-primary border-2': language.code === selectedLang}"
+        [ngClass]="{'border border-primary border-2 rounded': language.code === selectedLang}"
         (click)="selectLanguage(language.code)">
         {{language.symbol}}
     </div>
 </div>
 
+<div *ngIf="!translations?.length && !newTranslations?.length && !translateService.loading" class="text-secondary fs-6">
+    You don't saved anything yet... Search for new words, phrases, sentences
+</div>
+
 <div *ngIf="newTranslations.length" class="mb-3">
     <div *ngFor="let newTranslation of newTranslations">
         <ng-container *ngIf="newTranslation.Lang.code !== selectedLang">
-            <span class="me-3">{{newTranslation.Lang.symbol}}</span>
+            <span class="me-3 ms-4">{{newTranslation.Lang.symbol}}</span>
             <span class="fs-3">{{newTranslation.Text}}</span>
         </ng-container>
     </div>
-    <button type="button" class="btn btn-success mt-2" (click)="saveNewTranslations()">Add word</button>
+    <button type="button" class="btn btn-success mt-2 w-100" (click)="saveNewTranslations()">Save translations</button>
 </div>
 
 <div class="mb-5" *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
@@ -40,7 +44,7 @@
         <div *ngIf="relatedTranslations[translation.word_id]?.opened" class="p-2">
             <div *ngFor="let t of relatedTranslations[translation.word_id].values ">
                 <ng-container *ngIf="t.lang.code !== selectedLang">
-                    <span class="me-2">{{t.lang.symbol}}</span>
+                    <span class="me-2 ms-4">{{t.lang.symbol}}</span>
                     <span class="fs-5 text-secondary">{{t.text}}</span>
                 </ng-container>
             </div>
