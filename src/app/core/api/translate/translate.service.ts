@@ -20,7 +20,7 @@ export class TranslateService {
 
     public translate(data: any) {
         this.loading = true;
-        return this.httpClient.post(`${apiUrl}/api/translate`, data).pipe(
+        return this.httpClient.post(`${apiUrl}/api/translate/`, data).pipe(
             finalize(() => this.loading = false)
         );
     }
