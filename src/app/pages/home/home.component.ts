@@ -1,6 +1,7 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, TemplateRef, inject } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, catchError, combineLatest, debounceTime, filter, forkJoin, map, merge, mergeMap, of, retry, switchMap, throwError } from 'rxjs';
 import { apiUrl } from 'src/app/core/api/config';
 import { SettingsService } from 'src/app/core/api/settings/settings.service';
@@ -34,10 +35,11 @@ export class HomeComponent implements AfterViewInit {
     }
 
     constructor(
-        private translateService: TranslateService,
+        public settingsService: SettingsService,
+        public translateService: TranslateService,
         private route: ActivatedRoute,
         private router: Router,
-        public settingsService: SettingsService
+        private modalService: NgbModal
     ) {
         console.log('API URL <<', apiUrl)
         this.translateService.test().subscribe(r => console.log('...API TEST...', r))
@@ -165,6 +167,19 @@ export class HomeComponent implements AfterViewInit {
                 console.log('....', translations)
             })
         }
+    }
+
+    public deleteTranslations(translation: any, modal: TemplateRef<any>) {
+        this.modalService.open(modal).result.then(
+            _ => {
+                this.translateService.deleteTranslations(translation.user_id, translation.word_id)
+                    .subscribe(r => {
+                        console.log('deleted ..', r)
+                        this.refreshTranslations(this.selectedLang);
+                    })
+            },
+            _ => { }
+        );
     }
 
     private getTranslationRequest(): Observable<any> {

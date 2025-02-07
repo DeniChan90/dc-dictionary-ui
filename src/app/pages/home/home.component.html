@@ -18,25 +18,27 @@
     <div *ngFor="let newTranslation of newTranslations">
         <ng-container *ngIf="newTranslation.Lang.code !== selectedLang">
             <span class="me-3">{{newTranslation.Lang.symbol}}</span>
-            <span>{{newTranslation.Text}}</span>
-            <span *ngIf="newTranslation.Pronunciation">({{newTranslation.Pronunciation}})</span>
-
+            <span class="fs-3">{{newTranslation.Text}}</span>
         </ng-container>
     </div>
     <button type="button" class="btn btn-success mt-2" (click)="saveNewTranslations()">Add word</button>
 </div>
 
-<ng-container *ngIf="filteredTranslations || newTranslations.length; else loading">
-    <div *ngFor="let translation of filteredTranslations" class="nav-lang"
-        (click)="getRelatedTranslations(translation.word_id)">
-        <span>{{translation.text}}</span>
+<ng-container *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
+    <div *ngFor="let translation of filteredTranslations" class="nav-lang">
+        <div class="d-flex justify-content-between p-2">
+            <div (click)="getRelatedTranslations(translation.word_id)" class="flex-grow-1 fs-4">{{translation.text}}
+            </div>
+            <span (click)="deleteTranslations(translation, confirmDelete)">
+                <i class="bi bi-trash3-fill h3"></i>
+            </span>
+        </div>
 
         <div *ngIf="relatedTranslations[translation.word_id]?.opened" class="p-2">
             <div *ngFor="let t of relatedTranslations[translation.word_id].values ">
                 <ng-container *ngIf="t.lang.code !== selectedLang">
                     <span class="me-2">{{t.lang.symbol}}</span>
-                    <span>{{t.text}}</span>
-                    <span *ngIf="t.pronunciation">({{t.pronunciation}})</span>
+                    <span class="fs-3">{{t.text}}</span>
                 </ng-container>
             </div>
         </div>
@@ -48,5 +50,18 @@
         <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
         </div>
 
+    </div>
+</ng-template>
+
+<ng-template #confirmDelete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm delete</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        Are you sure that you want to delete ?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" (click)="modal.close()">Delete</button>
     </div>
 </ng-template>

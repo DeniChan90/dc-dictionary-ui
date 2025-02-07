@@ -8,6 +8,7 @@ import { apiUrl } from '../config';
 })
 export class TranslateService {
     public loading: boolean = false;
+    public loadingRelated: boolean = false;
 
     constructor(private httpClient: HttpClient) { }
     test() {
@@ -26,16 +27,17 @@ export class TranslateService {
     }
 
     public getTranslations(userId: string, lang: string = '') {
+        this.loading = true;
         return this.httpClient.get(`${apiUrl}/api/translate/${userId}/translations?lang=${lang}`).pipe(
-            finalize(() => this.loading = false)
+            finalize(() => setTimeout(() => this.loading = false, 500))
         );
 
     }
 
     public getRelatedTranslations(userId: string, wordId: string) {
-        this.loading = true
+        this.loadingRelated = true
         return this.httpClient.get(`${apiUrl}/api/translate/${userId}/related-translations?word_id=${wordId}`).pipe(
-            finalize(() => this.loading = false)
+            finalize(() => this.loadingRelated = false)
         )
     }
 
@@ -46,5 +48,11 @@ export class TranslateService {
             finalize(() => this.loading = false)
         );
 
+    }
+
+    public deleteTranslations(userId: string, wordId: string) {
+        this.loading = true;
+
+        return this.httpClient.delete(`${apiUrl}/api/translate/${userId}/translations/${wordId}`);
     }
 }
