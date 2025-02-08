@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LanguagesPipe } from 'src/app/shared/pipes/languages/languages.pipe';
 
 
 const routes: Routes = [
@@ -16,7 +15,6 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         HomeComponent,
-        LanguagesPipe
     ],
     imports: [
         CommonModule,

@@ -20,18 +20,19 @@
 
 <div *ngIf="newTranslations.length" class="mb-3">
     <div *ngFor="let newTranslation of newTranslations">
-        <ng-container *ngIf="newTranslation.Lang.code !== selectedLang">
+        <div *ngIf="newTranslation.Lang.code !== selectedLang"
+            class="d-flex align-items-center border-bottom border rounded p-2 mb-2">
             <span class="me-3 ms-4">{{newTranslation.Lang.symbol}}</span>
-            <span class="fs-3">{{newTranslation.Text}}</span>
-        </ng-container>
+            <span class="fs-5">{{newTranslation.Text}}</span>
+        </div>
     </div>
     <button type="button" class="btn btn-success mt-2 w-100" (click)="saveNewTranslations()">Save translations</button>
 </div>
 
 <div class="mb-5" *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
     <div *ngFor="let translation of filteredTranslations" class="nav-lang border border-secondary rounded mb-2">
-        <div class="d-flex justify-content-between align-items-center p-2">
-            <div (click)="getRelatedTranslations(translation.word_id)" class="flex-grow-1 fs-3">
+        <div class="d-flex justify-content-between align-items-center p-2 border-bottom border-secondary">
+            <div (click)="getRelatedTranslations(translation.word_id)" class="d-flex flex-grow-1 fs-5 me-2">
                 <i class="bi"
                     [ngClass]="relatedTranslations[translation.word_id] && relatedTranslations[translation.word_id].opened ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
                 <span class="ms-2">{{translation.text}}</span>
@@ -43,10 +44,11 @@
 
         <div *ngIf="relatedTranslations[translation.word_id]?.opened" class="p-2">
             <div *ngFor="let t of relatedTranslations[translation.word_id].values ">
-                <ng-container *ngIf="t.lang.code !== selectedLang">
-                    <span class="me-2 ms-4">{{t.lang.symbol}}</span>
-                    <span class="fs-5 text-secondary">{{t.text}}</span>
-                </ng-container>
+                <div *ngIf="t.lang.code !== selectedLang"
+                    class="d-flex align-items-center border-bottom border-secondary p-2">
+                    <span class="me-2 ms-2 me-3">{{t.lang.symbol}}</span>
+                    <span class="fs-6 text-secondary lh-1">{{t.text}}</span>
+                </div>
             </div>
         </div>
     </div>

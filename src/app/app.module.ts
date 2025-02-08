@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { InterceptorService } from './core/api/interceptor/interceptor.service';
 import { LayoutModule } from './features/layout/layout.module';
+import { WebSocketModule } from './pages/web-socket/web-socket.module';
 
 
 
@@ -20,6 +21,7 @@ import { LayoutModule } from './features/layout/layout.module';
         HttpClientModule,
         AppRoutingModule,
         LoginModule,
+        WebSocketModule,
         LayoutModule,
         NgbModule
     ],

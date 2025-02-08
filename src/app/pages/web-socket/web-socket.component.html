@@ -1,0 +1,24 @@
+<div class="d-flex flex-column">
+    <h3 class="mb-2">A little chat:</h3>
+    <div class="justify-content-end border border-secondary rounded p-2 overflow-scroll" style="height:65vh;">
+        <div *ngFor="let message of messages" class="p-1 border border-secondary rounded mb-2"
+            style="white-space: wrap;">
+            <div class="d-flex justify-content-between">
+                <div class="text-secondary fs-6">
+                    {{message.data.user}}
+                </div>
+                <div class="text-secondary fs-6">
+                    {{ message.data.created}}
+                </div>
+            </div>
+            <div class="p-1" [ngClass]="{'text-end': message.data.userId === authService.tokenData.User_id }">
+                {{ message.data?.message }}
+            </div>
+        </div>
+    </div>
+    <form [formGroup]="form">
+        <input class="form-control mt-2 mb-2" formControlName="message" id="message" placeholder="Type a message...">
+        <button [disabled]="!message.value" class="btn btn-primary ms-2 float-end" (click)="sendMessage()">Send
+            Message</button>
+    </form>
+</div>

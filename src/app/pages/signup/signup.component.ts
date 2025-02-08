@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from 'src/app/core/api/auth/auth.service';
 import { SettingsService } from 'src/app/core/api/settings/settings.service';
 import { TranslateService } from 'src/app/core/api/translate/translate.service';
@@ -27,6 +27,7 @@ export class SignupComponent {
     public languages: any = [];
     public selectedLanguages: any = [];
     public defaultLanguage: any;
+    public signupError: any = null;
 
     get submitDisabled() {
         const form = this.form.value;
@@ -42,7 +43,6 @@ export class SignupComponent {
     ) {
         this.translateService.getLanguages().subscribe((languages: any) => {
             this.languages = languages.sort((a: any, b: any) => {
-                console.log('test..', a)
                 return a.name > b.name ? 1 : -1;
             });
         });
@@ -52,6 +52,13 @@ export class SignupComponent {
         const langData = this.languagesForm.value;
 
         this.authService.signup({ ...this.form.value, User_type: "ADMIN" }).pipe(
+            catchError(e => {
+                this.signupError = e.error.error;
+
+                setTimeout(() => this.signupError = null, 3000);
+                console.log('...', e)
+                return throwError(e);
+            }),
             switchMap((tokenData: any) => {
                 localStorage.setItem('tokenData', JSON.stringify(tokenData));
                 return this.settingsService.saveSettings(tokenData.ID, langData);

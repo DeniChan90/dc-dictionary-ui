@@ -19,7 +19,6 @@ export class AuthService {
     }
 
     test() {
-        console.log('ENV .', environment)
         return this.httpClient.get(`${apiUrl}/api`);
     }
 

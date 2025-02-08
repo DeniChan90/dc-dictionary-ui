@@ -1,6 +1,13 @@
 <ul class="nav justify-content-between border-bottom border-secondary pt-2 pb-2 mb-2">
-    <div class="nav-item">
+    <div class="nav-item pointer" routerLink="/">
         <span class="nav-link text-light">Hello, {{fullUserName}} <i class="bi bi-emoji-smile"></i></span>
+    </div>
+    <div class="nav-item pointer">
+        <span class="nav-link text-light" routerLink="/web-socket">
+            <span class="d-inline-block bg-success rounded-circle me-2" style="width: 10px;height: 10px;"></span>
+            <i class="bi bi-person-fill"></i>
+            <span class="ms-2">{{onlineUsers}}</span>
+        </span>
     </div>
     <li class="nav-item">
         <button type="button" class="btn btn-outline-secondary me-2" (click)="logout()">
@@ -9,6 +16,7 @@
         </button>
     </li>
 </ul>
+
 <div *ngIf="settings; else loading" class="p-3">
     <ng-content></ng-content>
 </div>

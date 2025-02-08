@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
         ).subscribe(tokenData => {
             localStorage.setItem('tokenData', JSON.stringify(tokenData));
             this.router.navigateByUrl('/');
-            console.log('response..', tokenData)
         })
     }
 }

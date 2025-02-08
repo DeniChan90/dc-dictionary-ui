@@ -20,6 +20,11 @@ const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
+        path: 'web-socket',
+        loadChildren: () => import('./pages/web-socket/web-socket.module').then(m => m.WebSocketModule),
+        canActivate: [AuthGuard]
+    },
+    {
         path: '',
         redirectTo: 'home',
         pathMatch: 'full'

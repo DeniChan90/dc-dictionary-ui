@@ -38,7 +38,7 @@
                         <span>{{language.name}}</span>
                     </label>
                 </div>
-                <div ngbDropdown class="d-inline-block me-5">
+                <div ngbDropdown class="d-inline-block me-5 mt-2 mb-2">
                     <button type="button" class="btn btn-outline-secondary" id="dropdown" ngbDropdownToggle>
                         Select your native Language
                     </button>
@@ -54,7 +54,9 @@
                 <div class="form-text">Select at least 2 languages</div>
             </form>
 
-
+            <div *ngIf="signupError" class="text-danger mt-2 mb-2">
+                {{signupError}}
+            </div>
 
             <button type="submit" [disabled]="submitDisabled" (click)="signup()" class="btn btn-primary mt-3">
                 <span *ngIf="!authService.loading; else loader">Signup</span>
