@@ -1,53 +1,61 @@
-<form [formGroup]="form">
-    <div class="mb-3 d-flex">
-        <input class="form-control" formControlName="search" id="search" placeholder="Type something to translate...">
-        <button [disabled]="!search.value || newTranslations.length || hasTranslation" type="button"
-            class="btn btn-primary ms-2" (click)="searchTranslations()">Search</button>
-    </div>
-</form>
+<div class="position-fixed w-100 p-3 pb-0 start-0 bg-dark shadow-sm" style="top: 57px;">
+    <form [formGroup]="form">
+        <div class="mb-3 d-flex">
+            <input class="form-control" formControlName="search" id="search"
+                placeholder="Type something to translate...">
+            <button [disabled]="!search.value || newTranslations.length || hasTranslation" type="button"
+                class="btn btn-primary ms-2" (click)="searchTranslations()">Search</button>
+        </div>
+    </form>
 
-<div *ngIf="settingsService.settings?.Languages.length" class="d-flex overflow-auto">
-    <div *ngFor="let language of settingsService.settings.Languages" class="nav-lang m-3 p-3"
-        [ngClass]="{'border border-primary border-2 rounded': language.code === selectedLang}"
-        (click)="selectLanguage(language.code)">
-        {{language.symbol}}
-    </div>
-</div>
-
-<div *ngIf="!translations?.length && !newTranslations?.length && !translateService.loading" class="text-secondary fs-6">
-    You don't saved anything yet... Search for new words, phrases, sentences
-</div>
-
-<div *ngIf="newTranslations.length" class="mb-3">
-    <div *ngFor="let newTranslation of newTranslations">
-        <div *ngIf="newTranslation.Lang.code !== selectedLang"
-            class="d-flex align-items-center border-bottom border rounded p-2 mb-2">
-            <span class="me-3 ms-4">{{newTranslation.Lang.symbol}}</span>
-            <span class="fs-5">{{newTranslation.Text}}</span>
+    <div *ngIf="settingsService.settings?.Languages.length" class="d-flex overflow-auto">
+        <div *ngFor="let language of settingsService.settings.Languages" class="nav-lang m-3 p-3"
+            [ngClass]="{'border border-primary border-2 rounded': language.code === selectedLang}"
+            (click)="selectLanguage(language.code)">
+            {{language.symbol}}
         </div>
     </div>
-    <button type="button" class="btn btn-success mt-2 w-100" (click)="saveNewTranslations()">Save translations</button>
 </div>
 
-<div class="mb-5" *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
-    <div *ngFor="let translation of filteredTranslations" class="nav-lang border border-secondary rounded mb-2">
-        <div class="d-flex justify-content-between align-items-center p-2 border-bottom border-secondary">
-            <div (click)="getRelatedTranslations(translation.word_id)" class="d-flex flex-grow-1 fs-5 me-2">
-                <i class="bi"
-                    [ngClass]="relatedTranslations[translation.word_id] && relatedTranslations[translation.word_id].opened ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
-                <span class="ms-2">{{translation.text}}</span>
+<div style="margin-top: 156px;">
+    <div *ngIf="!translations?.length && !newTranslations?.length && !translateService.loading"
+        class="text-secondary fs-6">
+        You don't saved anything yet... Search for new words, phrases, sentences
+    </div>
+
+    <div *ngIf="newTranslations.length" class="mb-3">
+        <div *ngFor="let newTranslation of newTranslations">
+            <div *ngIf="newTranslation.Lang.code !== selectedLang"
+                class="d-flex align-items-center border-bottom border rounded p-2 mb-2">
+                <span class="me-3 ms-4">{{newTranslation.Lang.symbol}}</span>
+                <span class="fs-5">{{newTranslation.Text}}</span>
             </div>
-            <span (click)="deleteTranslations(translation, confirmDelete)">
-                <i class="bi bi-trash3-fill h3"></i>
-            </span>
         </div>
+        <button type="button" class="btn btn-success mt-2 w-100" (click)="saveNewTranslations()">Save
+            translations</button>
+    </div>
 
-        <div *ngIf="relatedTranslations[translation.word_id]?.opened" class="p-2">
-            <div *ngFor="let t of relatedTranslations[translation.word_id].values ">
-                <div *ngIf="t.lang.code !== selectedLang"
-                    class="d-flex align-items-center border-bottom border-secondary p-2">
-                    <span class="me-2 ms-2 me-3">{{t.lang.symbol}}</span>
-                    <span class="fs-6 text-secondary lh-1">{{t.text}}</span>
+    <div class="mb-5"
+        *ngIf="(filteredTranslations || newTranslations.length) && !translateService.loading; else loading">
+        <div *ngFor="let translation of filteredTranslations" class="nav-lang border border-secondary rounded mb-2">
+            <div class="d-flex justify-content-between align-items-center p-2 border-bottom border-secondary">
+                <div (click)="getRelatedTranslations(translation.word_id)" class="d-flex flex-grow-1 fs-5 me-2">
+                    <i class="bi"
+                        [ngClass]="relatedTranslations[translation.word_id] && relatedTranslations[translation.word_id].opened ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+                    <span class="ms-2">{{translation.text}}</span>
+                </div>
+                <span (click)="deleteTranslations(translation, confirmDelete)">
+                    <i class="bi bi-trash3-fill h3"></i>
+                </span>
+            </div>
+
+            <div *ngIf="relatedTranslations[translation.word_id]?.opened" class="p-2">
+                <div *ngFor="let t of relatedTranslations[translation.word_id].values ">
+                    <div *ngIf="t.lang.code !== selectedLang"
+                        class="d-flex align-items-center border-bottom border-secondary p-2">
+                        <span class="me-2 ms-2 me-3">{{t.lang.symbol}}</span>
+                        <span class="fs-6 text-secondary lh-1">{{t.text}}</span>
+                    </div>
                 </div>
             </div>
         </div>

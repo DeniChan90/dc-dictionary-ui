@@ -58,10 +58,10 @@
                 {{signupError}}
             </div>
 
-            <button type="submit" [disabled]="submitDisabled" (click)="signup()" class="btn btn-primary mt-3">
+            <button type="submit" [disabled]="submitDisabled" (click)="signup()" class="btn btn-primary mt-4 mb-3">
                 <span *ngIf="!authService.loading; else loader">Signup</span>
             </button>
-            <button type="button" [disabled]="authService.loading" class="btn btn-link" routerLink="/login">Back to
+            <button type="button" [disabled]="authService.loading" class="btn btn-link" (click)="toLogin()">Back to
                 Login</button>
         </form>
 

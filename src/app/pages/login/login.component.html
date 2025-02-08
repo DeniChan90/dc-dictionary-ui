@@ -19,7 +19,7 @@
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Check me out</label>
     </div> -->
-            <button [disabled]="submitDisabled" type="submit" class="btn btn-primary" (click)="login()">
+            <button [disabled]="submitDisabled" type="submit" class="btn btn-primary mb-3 mt-3" (click)="login()">
                 <span *ngIf="!authService.loading; else loader">Login</span>
             </button>
 

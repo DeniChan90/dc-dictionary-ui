@@ -1,4 +1,5 @@
-<ul class="nav justify-content-between border-bottom border-secondary pt-2 pb-2 mb-2">
+<ul
+    class="nav justify-content-between border-bottom border-secondary pt-2 pb-2 mb-2 position-fixed w-100 bg-dark top-0">
     <div class="nav-item pointer" routerLink="/">
         <span class="nav-link text-light">Hello, {{fullUserName}} <i class="bi bi-emoji-smile"></i></span>
     </div>
@@ -17,7 +18,7 @@
     </li>
 </ul>
 
-<div *ngIf="settings; else loading" class="p-3">
+<div *ngIf="settings; else loading" class="p-3" style="margin-top: 56px;">
     <ng-content></ng-content>
 </div>
 

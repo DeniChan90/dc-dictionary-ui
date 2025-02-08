@@ -83,4 +83,9 @@ export class SignupComponent {
         this.languagesForm.controls['Default_language'].setValue(language.code);
         this.defaultLanguage = language;
     }
+
+    public toLogin(): void {
+        window.scrollTo(0, 0);
+        this.router.navigateByUrl('/login');
+    }
 }
