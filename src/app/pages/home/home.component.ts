@@ -1,8 +1,8 @@
-import { Component, AfterViewInit, TemplateRef, inject, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, TemplateRef, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, catchError, combineLatest, debounceTime, filter, forkJoin, map, merge, mergeMap, of, retry, switchMap, throwError } from 'rxjs';
+import { Observable, catchError, debounceTime, filter, forkJoin, map, of, retry, switchMap, throwError } from 'rxjs';
 import { apiUrl } from 'src/app/core/api/config';
 import { SettingsService } from 'src/app/core/api/settings/settings.service';
 import { TranslateService } from 'src/app/core/api/translate/translate.service';
@@ -21,7 +21,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     public filteredTranslations: any = null;
     public newTranslations: any[] = [];
     public selectedLang: string = '';
-    public relatedTranslations: { [key: string]: { opened: boolean; values: any[] } } = {} as any;
+    public relatedTranslations: { [key: string]: { opened: boolean; values?: any[] } } = {} as any;
 
     get search() {
         return this.form.controls['search'];
@@ -71,7 +71,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
                     ...translation,
                     Lang: this.settingsService.settings.Languages.find((l: any) => l.code === translation.Lang)
                 }
-            )))
+            ))),
         ).subscribe(val => {
             this.newTranslations = val;
             if (val.length) {
@@ -173,6 +173,9 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
         if (this.relatedTranslations[wordId]) {
             this.relatedTranslations[wordId].opened = !this.relatedTranslations[wordId].opened;
         } else {
+            this.relatedTranslations[wordId] = {
+                opened: true
+            };
             this.translateService.getRelatedTranslations(this.settingsService.userId, wordId).pipe(
                 map((val: any) => val.map((translation: any) => (
                     {
