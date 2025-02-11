@@ -14,6 +14,7 @@ export class LayoutComponent implements OnDestroy {
     public fullUserName: string = '';
     public onlineUsers: number = 0;
     private messageSubscription: Subscription | undefined;
+    private onlinePing: any;
 
     constructor(
         public settingsService: SettingsService,
@@ -27,14 +28,18 @@ export class LayoutComponent implements OnDestroy {
                 this.fullUserName = `${userData.first_name} ${userData.last_name}`;
             }
         );
-        //this.messageSubscription = this.onlineWs.getMessages().subscribe(
-        //    (message: any) => {
-        //        if (typeof message === 'number') {
-        //            console.log('message', message)
-        //            this.onlineUsers = message;
-        //        }
-        //    }
-        //);
+        this.messageSubscription = this.onlineWs.getMessages().subscribe(
+            (message: any) => {
+                if (typeof message === 'number') {
+                    console.log('message', message)
+                    this.onlineUsers = message;
+                }
+            }
+        );
+
+        this.onlinePing = setInterval(() => {
+            this.onlineWs.sendMessage("ping");
+        }, 3000)
 
         this.onlineWs.socket$.subscribe((count: number) => {
             console.log("COUNT UPDATED>>>", count)
@@ -45,6 +50,7 @@ export class LayoutComponent implements OnDestroy {
     public ngOnDestroy(): void {
         this.messageSubscription?.unsubscribe();
         this.onlineWs.closeConnection();
+        this.onlinePing && clearInterval(this.onlinePing);
     }
 
     public logout() {
